@@ -1,0 +1,50 @@
+.home-div {
+  height: 650px;
+  background: linear-gradient(to right, #071f63, #000, #000, #000, #071f63);
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.home-div img {
+  width: 40%;
+  position: relative;
+  top: -100px;
+  z-index: 2;
+}
+
+.blue-circle {
+  width: 1300px;
+  height: 1300px;
+  border-radius: 55%;
+  background-color: #08226a;
+  z-index: 1;
+  position: absolute;
+  right: -300px;
+  top: 100px;
+  bottom: 0px;
+}
+
+/* Responsive layout for tablets (768px and below) */
+@media (max-width: 768px) {
+  .home-div {
+    height: 400px;
+  }
+
+  .home-div img {
+    width: 60%;
+  }
+}
+
+/* Responsive layout for mobile phones (480px and below) */
+@media (max-width: 480px) {
+  .home-div {
+    height: 300px;
+  }
+
+  .home-div img {
+    width: 80%;
+  }
+}

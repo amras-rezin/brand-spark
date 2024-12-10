@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/BrandSpark Logo orange-04.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700&display=swap"
+    rel="stylesheet">
+  <title>Brand Spark</title>
+</head>
+<style>
+  .cursor {
+    position: fixed;
+    width: 25px;
+    height: 25px;
+    border: 2px solid orangered;
+    border-radius: 50%;
+    left: 0;
+    top: 0;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    transition: 0.05s;
+    z-index: 3000;
+  }
+
+  .cursor2 {
+    z-index: 3000;
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    background-color: orangered;
+    border-radius: 50%;
+    left: 0;
+    top: 0;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    transition: 0.15s;
+  }
+
+  .content:hover~.cursor {
+    transform: translate(-50%, -50%) scale(1.5);
+    background-color: #c6c6c6;
+    opacity: 0.5;
+  }
+
+  .content:hover~.cursor2 {
+    opacity: 0;
+    width: 10px;
+    height: 10px;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+  }
+</style>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
+  <div class="cursor"></div>
+  <div class="cursor2"></div>
+
+
+  <script>
+    var cursor = document.querySelector(".cursor");
+    var cursor2 = document.querySelector(".cursor2");
+    if (!window.location.pathname.includes('admin')) {
+      document.addEventListener("mousemove", function (e) {
+        cursor.style.cssText = cursor2.style.cssText =
+          "left: " + e.clientX + "px; top: " + e.clientY + "px;";
+      });
+    } else {
+      cursor.style.display = "none";
+      cursor2.style.display = "none";
+    }
+  </script>
+
+
+</body>
+
+</html>
