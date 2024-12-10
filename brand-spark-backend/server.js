@@ -11,7 +11,7 @@ app.use(cors());
 const users = [
   {
     email: 'admin@example.com',
-    password: 'password123',
+    password: 'password1234',
   },
 ];
 
