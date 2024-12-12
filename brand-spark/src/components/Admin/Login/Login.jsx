@@ -3,9 +3,15 @@ import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import './Login.css';
 import { FaSpinner } from 'react-icons/fa';
-// import axiosAdmin from '../../../axios/axiosAdmin';
+import { axiosAdmin } from '../../../axios/axiosAdmin';
+import { useDispatch } from 'react-redux';
+import { adminLogin } from '../../../redux/slices/adminSlice';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
   const initialValues = {
@@ -24,17 +30,28 @@ const Login = () => {
 
   const handleSubmit = async (values) => {
     setLoading(true);
-    console.log('Form submitted with:', values);
-    const {email, password} = values
-    // const {data} = await axiosAdmin().post('/login',{email, password})
-    // if(data.message === 'success') {
-    //   setLoading(false); 
-    //   console.log('successss')
-    // }
-    setTimeout(() => {
-      setLoading(false); 
-    }, 2000); 
+    const { email, password } = values;
+    try {
+      const { data } = await axiosAdmin().post('/login', { email, password });
+      if (data.message === 'Success') {
+        setTimeout(()=>{
+          setLoading(false);
+          localStorage.setItem('adminToken', data.token);
+          dispatch(adminLogin({ name: data.name, loggedIn: true }));
+          toast.success('Admin Logged in Successfully');
+          navigate('/admin/dashboard')
+        },1000)
+      } else {
+        setLoading(false);
+        toast.error(data.message);
+      }
+    } catch (error) {
+      setLoading(false);
+      console.error('Error during login:', error);
+      toast.error('An unexpected error occurred. Please try again.');
+    }
   };
+  
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-custom-gradient text-white">
@@ -52,7 +69,9 @@ const Login = () => {
         >
           <Form className="space-y-5">
             <div>
-              <label className="block font-medium mb-2 text-gray-300">Email:</label>
+              <label className="block font-medium mb-2 text-gray-300">
+                Email:
+              </label>
               <Field
                 type="text"
                 name="email"
@@ -66,7 +85,9 @@ const Login = () => {
             </div>
 
             <div>
-              <label className="block font-medium mb-2 text-gray-300">Password:</label>
+              <label className="block font-medium mb-2 text-gray-300">
+                Password:
+              </label>
               <Field
                 type="password"
                 name="password"
@@ -80,20 +101,18 @@ const Login = () => {
             </div>
 
             <div className="text-center">
-                <button
-                  type="submit"
-                  className="relative"
-                >
-                  <span className="circle1"></span>
-                  <span className="circle2"></span>
-                  <span className="circle3"></span>
-                  <span className="circle4"></span>
-                  <span className="circle5"></span>
-                  <span className="text flex justify-center items-center">  {loading && (
-                    <FaSpinner className="animate-spin mr-2" />
-                  )}Submit</span>
-                </button>
-              </div>
+              <button type="submit" className="relative">
+                <span className="circle1"></span>
+                <span className="circle2"></span>
+                <span className="circle3"></span>
+                <span className="circle4"></span>
+                <span className="circle5"></span>
+                <span className="text flex justify-center items-center">
+                  {' '}
+                  {loading && <FaSpinner className="animate-spin mr-2" />}Submit
+                </span>
+              </button>
+            </div>
           </Form>
         </Formik>
       </div>
