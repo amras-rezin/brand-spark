@@ -1,3 +1,4 @@
+/* Main container styling */
 .main-client {
   width: 100%;
   background-color: black;
@@ -9,6 +10,7 @@
   gap: 40px;
 }
 
+/* Icon styling */
 .client-icon {
   width: 100px; /* Adjust size as needed */
   height: auto;
@@ -16,26 +18,33 @@
   padding-right: 10px;
 }
 
-/* Continuous scroll styling */
+/* Row container styling */
 .top-row,
 .bottom-row {
   display: flex;
   gap: 20px;
-  width: calc(
-    100% * 2
-  ); /* Ensures row spans twice to facilitate seamless scroll */
+  width: max-content; /* Allows content to overflow for continuous scrolling */
   animation-timing-function: linear;
+  position: relative;
 }
 
-/* Scroll animations */
+/* Continuous scroll for top row */
 .top-row {
   animation: scroll-left 20s linear infinite;
+  background: linear-gradient(to right, #1e3c72, #2a5298); /* Example gradient background */
+  padding: 10px 0;
+  border-radius: 10px;
 }
 
+/* Continuous scroll for bottom row */
 .bottom-row {
   animation: scroll-right 20s linear infinite;
+  background: linear-gradient(to right, #2a5298, #1e3c72); /* Example gradient background */
+  padding: 10px 0;
+  border-radius: 10px;
 }
 
+/* Keyframes for seamless scrolling */
 @keyframes scroll-left {
   0% {
     transform: translateX(0);

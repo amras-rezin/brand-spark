@@ -19,8 +19,10 @@ app.post('/api/login', (req, res) => {
   const { email, password } = req.body;
   const user = users.find(u => u.email === email && u.password === password);
   if (user) {
+    console.log('Login successful');
     res.status(200).json({ message: 'Login successful', user });
   } else {
+    console.log('Invalid email or password');
     res.status(400).json({ message: 'Invalid email or password' });
   }
 });

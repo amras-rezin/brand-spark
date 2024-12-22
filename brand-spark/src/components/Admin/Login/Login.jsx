@@ -3,7 +3,7 @@ import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import './Login.css';
 import { FaSpinner } from 'react-icons/fa';
-// import axiosAdmin from '../../../axios/axiosAdmin';
+import axiosAdmin from '../../../axios/axiosAdmin';
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
@@ -26,11 +26,11 @@ const Login = () => {
     setLoading(true);
     console.log('Form submitted with:', values);
     const {email, password} = values
-    // const {data} = await axiosAdmin().post('/login',{email, password})
-    // if(data.message === 'success') {
-    //   setLoading(false); 
-    //   console.log('successss')
-    // }
+    const {data} = await axiosAdmin().post('/login',{email, password})
+    if(data.message === 'success') {
+      setLoading(false); 
+      console.log('successss')
+    }
     setTimeout(() => {
       setLoading(false); 
     }, 2000); 
