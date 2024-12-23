@@ -8,14 +8,26 @@ const Clients = () => {
   const bottomBrandLogo = "/icons/sparkWhite.png"; 
 
   const createRow = (logos, keyPrefix, brandLogo) => {
-    const logosWithBrand = logos.flatMap((logo, i) => [
-      <img key={`${keyPrefix}-${i}`} className="client-icon" src={logo} alt={`${keyPrefix}-${i}`} />,
-      <img key={`${keyPrefix}-brand-${i}`} className="client-icon" src={brandLogo} alt={`${keyPrefix}-brand`} />,
-    ]);
-
-    // Duplicate logos multiple times for seamless scrolling
-    return [...logosWithBrand, ...logosWithBrand, ...logosWithBrand];
+    return Array(3)
+      .fill(logos)
+      .flatMap((logosBatch, dupIndex) =>
+        logosBatch.flatMap((logo, i) => [
+          <img
+            key={`${keyPrefix}-${dupIndex}-${i}`}
+            className="client-icon"
+            src={logo}
+            alt={`${keyPrefix}-${i}`}
+          />,
+          <img
+            key={`${keyPrefix}-brand-${dupIndex}-${i}`}
+            className="client-icon brand-logo"
+            src={brandLogo}
+            alt={`${keyPrefix}-brand`}
+          />,
+        ])
+      );
   };
+  
 
   return (
     <motion.div

@@ -1,44 +1,63 @@
-import  { useState } from "react";
-import { FaEnvelope } from "react-icons/fa";
+import { FaEnvelope, FaSpinner } from "react-icons/fa";
 import { motion } from "framer-motion";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import axios from "axios";
 
 import "./Contact.css";
+import { toast } from "react-toastify";
+import { useState } from "react";
 
 const Contact = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    organization: "",
-    email: "",
-    contact: "",
-    website: "",
-    services: [],
-    budget: "",
-    source: "",
+  const [loading, setLoading] = useState(false);
+  const validationSchema = Yup.object({
+    name: Yup.string().required("Name is required"),
+    organization: Yup.string().required("Organization is required"),
+    email: Yup.string().email("Invalid email format"),
+    contact: Yup.string()
+      .required("Contact is required")
+      .matches(/^[0-9]{10}$/, "Contact must be a 10-digit number"),
+    website: Yup.string().url("Invalid URL"),
+    services: Yup.array(),
+    budget: Yup.string(),
+    source: Yup.string(),
   });
 
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    if (type === "checkbox") {
-      setFormData((prevData) => ({
-        ...prevData,
-        services: checked
-          ? [...prevData.services, value]
-          : prevData.services.filter((service) => service !== value),
-      }));
-    } else {
-      setFormData({ ...formData, [name]: value });
-    }
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(formData);
-  };
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      organization: "",
+      email: "",
+      contact: "",
+      website: "",
+      services: [],
+      budget: "",
+      source: "",
+    },
+    validationSchema,
+    onSubmit: async (values) => {
+      setLoading(true);
+      try {
+        const response = await axios.post(
+          `${import.meta.env.VITE_BASE_URL}/contact`,
+          values
+        );
+        if (response.data.message === "Form submitted successfully") {
+          toast.success("Form submitted successfully");
+        } else {
+          toast.error("Form submission failed");
+        }
+      } catch (error) {
+        console.error("Error submitting form", error);
+      }finally{
+        setLoading(false);
+      }
+    },
+  });
 
   return (
     <div className="contact-page">
       <div className="container">
-        {/* Contact Form */}
         <motion.div
           className="contact-form"
           initial={{ opacity: 0, y: 50 }}
@@ -50,113 +69,107 @@ const Contact = () => {
           viewport={{ once: true, amount: 0.2 }}
         >
           <h2>Get in Touch</h2>
-          <form onSubmit={handleSubmit}>
-            {/* Name and Organization */}
+          <form onSubmit={formik.handleSubmit}>
             <div className="row">
-              <div className="flex flex-col ">
+              <div className="flex flex-col">
                 <label>Your Name *</label>
                 <input
                   type="text"
                   name="name"
-                  value={formData.name}
-                  onChange={handleChange}
+                  value={formik.values.name}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
                   required
                   className="ip-4"
                 />
+                {formik.touched.name && formik.errors.name && (
+                  <p className="error-text  text-sm text-red-500 -mt-1">{formik.errors.name}</p>
+                )}
               </div>
-              <div className="flex flex-col ">
-                <label>Your Organization&apos;s Name</label>
+              <div className="flex flex-col">
+                <label>Your Organization&apos;s Name *</label>
                 <input
                   type="text"
                   name="organization"
-                  value={formData.organization}
-                  onChange={handleChange}
+                  value={formik.values.organization}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
                   className="ip-4"
                 />
+                {formik.touched.organization && formik.errors.organization && (
+                  <p className="error-text  text-sm text-red-500 -mt-1">{formik.errors.organization}</p>
+                )}
               </div>
             </div>
 
-            {/* Email and Contact */}
             <div className="row">
-              <div className="flex flex-col ">
-                <label>Your Email *</label>
+              <div className="flex flex-col">
+                <label>Your Email</label>
                 <input
                   type="email"
                   name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
+                  value={formik.values.email}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
                   className="ip-4"
                 />
+                {formik.touched.email && formik.errors.email && (
+                  <p className="error-text  text-sm text-red-500 -mt-1">{formik.errors.email}</p>
+                )}
               </div>
-              <div className="flex flex-col ">
-                <label>Your Contact</label>
+              <div className="flex flex-col">
+                <label>Your Contact *</label>
                 <input
                   type="tel"
                   name="contact"
-                  value={formData.contact}
-                  onChange={handleChange}
+                  value={formik.values.contact}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
                   className="ip-4"
                 />
+                {formik.touched.contact && formik.errors.contact && (
+                  <p className="error-text  text-sm text-red-500 -mt-1">{formik.errors.contact}</p>
+                )}
               </div>
             </div>
 
-            {/* Website */}
-            <label>Website / Social Media Link</label>
+            <label>Website / Social Media Link *</label>
             <input
               type="url"
               name="website"
-              value={formData.website}
-              onChange={handleChange}
+              value={formik.values.website}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
             />
+            {formik.touched.website && formik.errors.website && (
+              <p className="error-text text-sm text-red-500 -mt-1">{formik.errors.website}</p>
+            )}
 
-            {/* Services */}
             <label>What services are you interested in?</label>
             <div className="checkbox-group">
-              <label>
-                <input
-                  type="checkbox"
-                  name="services"
-                  value="Logo design"
-                  onChange={handleChange}
-                />
-                Logo design
-              </label>
-              <label>
-                <input
-                  type="checkbox"
-                  name="services"
-                  value="Brand identity development"
-                  onChange={handleChange}
-                />
-                Brand identity development
-              </label>
-              <label>
-                <input
-                  type="checkbox"
-                  name="services"
-                  value="Packaging design"
-                  onChange={handleChange}
-                />
-                Packaging design
-              </label>
-              <label>
-                <input
-                  type="checkbox"
-                  name="services"
-                  value="Brand consultation"
-                  onChange={handleChange}
-                />
-                Brand consultation
-              </label>
+              {[
+                "Logo design",
+                "Brand identity development",
+                "Packaging design",
+                "Brand consultation",
+              ].map((service) => (
+                <label key={service}>
+                  <input
+                    type="checkbox"
+                    name="services"
+                    value={service}
+                    onChange={formik.handleChange}
+                  />
+                  {service}
+                </label>
+              ))}
             </div>
 
-            {/* Budget */}
             <label>How much are you looking to invest in this project?</label>
             <select
               name="budget"
-              value={formData.budget}
-              onChange={handleChange}
+              value={formik.values.budget}
+              onChange={formik.handleChange}
               className="dpdn"
             >
               <option value="">Select</option>
@@ -169,12 +182,11 @@ const Contact = () => {
               <option value="₹5,00,000 and above">₹5,00,000 and above</option>
             </select>
 
-            {/* Source */}
             <label>And lastly, how did you hear about us?</label>
             <select
               name="source"
-              value={formData.source}
-              onChange={handleChange}
+              value={formik.values.source}
+              onChange={formik.handleChange}
               className="dpdn"
             >
               <option value="">Select</option>
@@ -182,11 +194,13 @@ const Contact = () => {
               <option value="Referral">Referral</option>
             </select>
 
-            <button type="submit">Let&apos;s Connect!</button>
+            <button type="submit flex">
+            {loading ? <FaSpinner className="animate-spin mr-2" /> : "Let's Connect!"}
+
+            </button>
           </form>
         </motion.div>
 
-        {/* Contact Info */}
         <motion.div
           className="contact-info"
           initial={{ opacity: 0, y: 50 }}
@@ -201,13 +215,13 @@ const Contact = () => {
             Let’s make it <br /> a reality!
           </h2>
           <p>
-            We&apos;re excited to work with you soon! Please share your details &amp;
-            we&apos;ll get back in 2-3 working days.
+            We&apos;re excited to work with you soon! Please share your details
+            &amp; we&apos;ll get back in 2-3 working days.
           </p>
           <p>Contact</p>
-          <p className="flex items-center ">
+          <p className="flex items-center">
             <FaEnvelope />
-            <a href="mailto:brandspark.in@gmail.com" className="pl-2 ">
+            <a href="mailto:brandspark.in@gmail.com" className="pl-2">
               brandspark.in@gmail.com
             </a>
           </p>
