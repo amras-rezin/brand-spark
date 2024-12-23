@@ -113,9 +113,7 @@ export const MobileSidebar = ({ className, children, ...props }) => {
 export const SidebarLink = ({ link, className, ...props }) => {
     const { open, animate } = useSidebar();
     const dispatch = useDispatch();
-    // Handle link click
     const handleClick = (event) => {
-      // Prevent default navigation if onClick is defined
       if (link.onClick) {
         event.preventDefault();
         link.onClick(dispatch);
@@ -124,7 +122,7 @@ export const SidebarLink = ({ link, className, ...props }) => {
   
     return (
       <Link
-        to={link.href || "#"} // Fallback to "#" if href is undefined
+        to={link.href || "#"} 
         className={cn("flex items-center justify-start gap-2 group/sidebar py-2", className)}
         onClick={handleClick} // Attach the click handler
         {...props}
