@@ -101,7 +101,7 @@ const Login = () => {
             </div>
 
             <div className="text-center">
-              <button type="submit" className="relative">
+              <button type="submit" className="relative w-28 h-10 text-center">
                 <span className="circle1"></span>
                 <span className="circle2"></span>
                 <span className="circle3"></span>
@@ -109,7 +109,7 @@ const Login = () => {
                 <span className="circle5"></span>
                 <span className="text flex justify-center items-center">
                   {' '}
-                  {loading && <FaSpinner className="animate-spin mr-2" />}Submit
+                  {loading ? <FaSpinner className="animate-spin mr-2" /> : 'Submit'}
                 </span>
               </button>
             </div>

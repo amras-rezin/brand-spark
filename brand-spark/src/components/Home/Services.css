@@ -1,4 +1,4 @@
-/* Existing CSS for desktop view */
+/* General styles remain unchanged */
 @font-face {
   font-family: "CustomFont";
   src: url("/font/font2.otf") format("opentype");
@@ -71,6 +71,7 @@
   display: flex;
   gap: 15px;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 /* Responsive layout for tablets (768px and below) */
@@ -96,13 +97,13 @@
   }
 
   .right-ser {
-    flex-direction: column;
     align-items: center;
   }
 
   .first-off,
   .second-off {
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     gap: 15px;
   }
 
@@ -124,24 +125,21 @@
     line-height: 50px;
   }
 
-  .box {
-    padding: 15px;
-    width: 45%; /* Two boxes per row */
-  }
-
   .img {
     width: 120px;
   }
 
   .first-off,
   .second-off {
-    flex-direction: row;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     gap: 10px;
   }
 
   .box {
-    width: 48%; /* Adjust the width to fit two boxes per row */
+    padding: 15px;
+    width: 100%;
+    max-width: none; /* Let the grid determine the width */
   }
 }
 

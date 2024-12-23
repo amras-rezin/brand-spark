@@ -66,47 +66,7 @@ app.post('/api/login', async (req, res) => {
   }
 });
 
-app.post('/api/contact', async (req, res) => {
-  const { name, organization, email, contact, website, services, budget, source } = req.body;
-  console.log('Contact form submitted:', req.body);
 
-  if (!name || !organization || !email || !contact) {
-    return res.status(400).json({
-      message: 'All fields are required',
-    });
-  }
-
-  try {
-    const text = `
-Inquiry Details :
-
-• Name: ${name}
-• Organization: ${organization}
-• Email: ${email}
-• Contact: ${contact}
-
-Additional Information :
-
-🔗 Website/Social Media: ${website || "Not provided"}
-📋 Services Interested In: ${services.length ? services.join(", ") : "No services selected"}
-💰 Budget Range: ${budget || "Not specified"}
-📣 Heard About Us From: ${source || "Not specified"}
-
----
-Thank you ! 
-`;
-
-await sendMail(text);
-    res.status(200).json({
-      message: 'Form submitted successfully',
-    });
-  } catch (error) {
-    console.error('Error submitting form:', error);
-    res.status(500).json({
-      message: 'Internal Server Error',
-    });
-  }
-});
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
