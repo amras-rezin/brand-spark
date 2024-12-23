@@ -15,6 +15,10 @@ const teamMembers = [
 const Team = () => {
   return (
     <div className="bg-custom-gradient py-10 px-5">
+     <div className="head">
+        <h1>Our Team</h1>
+      </div>
+
       <Swiper
         modules={[Autoplay, EffectCoverflow]}
         autoplay={{

@@ -1,13 +1,40 @@
 
+import { motion } from "framer-motion";
 import "./ServicesCards.css";
+import { useEffect } from "react";
 
 const ServicesCards = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <div className="main-service">
-      <div className="head-service">
+      {/* Animated heading */}
+      <motion.div
+        className="head-service"
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{
+          duration: 0.5,
+          ease: "easeInOut",
+        }}
+        viewport={{ once: true, amount: 0.2 }}
+      >
         <h1>Our Services</h1>
-      </div>
-      <div className="card-boxes">
+      </motion.div>
+
+      {/* Animated card boxes */}
+      <motion.div
+        className="card-boxes"
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{
+          duration: 0.7,
+          ease: "easeInOut",
+          delay: 0.3, // Delay for smooth sequential animation
+        }}
+        viewport={{ once: true, amount: 0.2 }}
+      >
         <div className="boxes">
           <div className="left">
             <img src="./elements/grid1.png" alt="" />
@@ -22,6 +49,7 @@ const ServicesCards = () => {
             </p>
           </div>
         </div>
+        {/* Repeat for other boxes */}
         <div className="boxes">
           <div className="left">
             <img src="./elements/grid2.png" alt="" />
@@ -36,6 +64,7 @@ const ServicesCards = () => {
             </p>
           </div>
         </div>
+        {/* Continue with other services as per the original code */}
         <div className="boxes">
           <div className="left">
             <img src="./elements/grid3.png" alt="" />
@@ -120,7 +149,7 @@ const ServicesCards = () => {
             </p>
           </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };

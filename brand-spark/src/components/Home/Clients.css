@@ -1,7 +1,7 @@
 .main-client {
   width: 100%;
   background-color: black;
-  padding: 40px 20px;
+  padding: 50px 0px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -10,8 +10,8 @@
 }
 
 .client-icon {
-  width: 100px; /* Adjust size as needed */
-  height: auto;
+  width: auto; /* Adjust size as needed */
+  height: 70px;
   padding-left: 10px;
   padding-right: 10px;
 }
@@ -21,15 +21,12 @@
 .bottom-row {
   display: flex;
   gap: 20px;
-  width: calc(
-    100% * 2
-  ); /* Ensures row spans twice to facilitate seamless scroll */
   animation-timing-function: linear;
 }
 
 /* Scroll animations */
 .top-row {
-  animation: scroll-left 20s linear infinite;
+  animation: scroll-left 20s linear infinite; /* Increased duration */
 }
 
 .bottom-row {
@@ -57,26 +54,26 @@
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .client-icon {
-    width: 80px;
+    height: 50px;
     padding-left: 8px;
     padding-right: 8px;
   }
   .top-row,
   .bottom-row {
     gap: 15px;
-    animation-duration: 25s;
+    animation-duration: 20s; /* Slow down for smaller screens */
   }
 }
 
 @media (max-width: 480px) {
   .client-icon {
-    width: 60px;
+    height: 40px;
     padding-left: 5px;
     padding-right: 5px;
   }
   .top-row,
   .bottom-row {
     gap: 10px;
-    animation-duration: 30s;
+    animation-duration: 20s; /* Further slow down */
   }
 }

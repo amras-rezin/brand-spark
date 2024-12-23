@@ -7,19 +7,27 @@
 }
 
 .main {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
   height: auto;
   background-color: black;
   padding: 30px 10px;
 }
+
 .service {
   font-family: "CustomFont", sans-serif;
   font-size: 65px;
   font-weight: 800;
   line-height: 80px;
+  color: white;
 }
+
 .service span {
   color: #086aff;
 }
+
 .img {
   width: 150px;
   position: relative;
@@ -39,29 +47,29 @@
   gap: 10px;
   border-radius: 20px;
 }
+
 .box img {
   width: 60px;
-}
-
-.box p {
-  font-size: 10px;
-  font-weight: 100;
-  line-height: 14px;
 }
 
 .box p,
 .box h4 {
   color: white;
+  font-size: 10px;
+  font-weight: 100;
+  line-height: 14px;
 }
 
 .right-ser {
+  display: flex;
+  flex-direction: column;
   gap: 15px;
 }
 
 .first-off,
 .second-off {
-  gap: 15px;
   display: flex;
+  gap: 15px;
   flex-wrap: wrap;
 }
 
@@ -70,7 +78,6 @@
   .main {
     flex-direction: column;
     padding: 20px 30px;
-    height: auto;
   }
 
   .left-ser {
@@ -88,7 +95,6 @@
     line-height: 60px;
   }
 
-  /* Make boxes stack in a single column */
   .right-ser {
     flex-direction: column;
     align-items: center;
@@ -101,7 +107,7 @@
   }
 
   .box {
-    width: 100%; /* Full width for better readability on smaller screens */
+    width: 100%;
     max-width: 300px;
   }
 }
@@ -111,8 +117,8 @@
   .main {
     flex-direction: column;
     padding: 20px;
-    height: auto;
   }
+
   .service {
     font-size: 40px;
     line-height: 50px;
@@ -120,11 +126,22 @@
 
   .box {
     padding: 15px;
-    width: 90%;
+    width: 45%; /* Two boxes per row */
   }
 
   .img {
     width: 120px;
+  }
+
+  .first-off,
+  .second-off {
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .box {
+    width: 48%; /* Adjust the width to fit two boxes per row */
   }
 }
 

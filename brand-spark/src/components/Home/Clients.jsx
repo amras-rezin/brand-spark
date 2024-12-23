@@ -1,52 +1,40 @@
-import {motion} from 'framer-motion';
+import { motion } from "framer-motion";
 import "./Clients.css";
 
 const Clients = () => {
+  const blueLogos = [...Array(7)].map((_, i) => `/icons/BLUE${i + 1}.png`);
+  const whiteLogos = [...Array(7)].map((_, i) => `/icons/white${i+1}.png`);
+  const topBrandLogo = "/icons/sparkBlue.png"; 
+  const bottomBrandLogo = "/icons/sparkWhite.png"; 
+
+  const createRow = (logos, keyPrefix, brandLogo) => {
+    const logosWithBrand = logos.flatMap((logo, i) => [
+      <img key={`${keyPrefix}-${i}`} className="client-icon" src={logo} alt={`${keyPrefix}-${i}`} />,
+      <img key={`${keyPrefix}-brand-${i}`} className="client-icon" src={brandLogo} alt={`${keyPrefix}-brand`} />,
+    ]);
+
+    // Duplicate logos multiple times for seamless scrolling
+    return [...logosWithBrand, ...logosWithBrand, ...logosWithBrand];
+  };
+
   return (
     <motion.div
-    className="main-client flex justify-center items-center flex-col gap-10"
-    initial={{ opacity: 0, y: 30 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true }}
-    transition={{ duration: 0.8, ease: "easeInOut", delay: 0.5 }}
-  >
-      <div className="top-row">
-        {[...Array(10)].map((_, i) => (
-          <img
-            key={`top-${i}`}
-            className="client-icon"
-            src={`/icons/${i + 1}.png`}
-            alt={`client-${i + 1}`}
-          />
-        ))}
-        {/* Duplicate the images for seamless scrolling */}
-        {[...Array(10)].map((_, i) => (
-          <img
-            key={`top-dup-${i}`}
-            className="client-icon"
-            src={`/icons/${i + 1}.png`}
-            alt={`client-${i + 1}`}
-          />
-        ))}
+      className="main-client flex justify-center items-center flex-col gap-10"
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.8, ease: "easeInOut", delay: 0.5 }}
+    >
+      <div className="w-[100%] bg-white h-auto py-1">
+        <div className="top-row">
+        {createRow(blueLogos, "top", topBrandLogo)}
+        </div>
       </div>
-      <div className="bottom-row">
-        {[...Array(10)].map((_, i) => (
-          <img
-            key={`bottom-${i}`}
-            className="client-icon"
-            src={`/icons/${10 - i}.png`}
-            alt={`client-${10 - i}`}
-          />
-        ))}
-        {/* Duplicate the images for seamless scrolling */}
-        {[...Array(10)].map((_, i) => (
-          <img
-            key={`bottom-dup-${i}`}
-            className="client-icon"
-            src={`/icons/${10 - i}.png`}
-            alt={`client-${10 - i}`}
-          />
-        ))}
+      <div className="w-[100%] bg-customBlue h-auto py-1">
+        <div className="bottom-row justify-end">
+          {/* Reverse whiteLogos here */}
+          {createRow(whiteLogos.reverse(), "bottom", bottomBrandLogo)}
+        </div>
       </div>
     </motion.div>
   );

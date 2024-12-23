@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import { FaEnvelope } from "react-icons/fa";
+import { motion } from "framer-motion";
 
 import "./Contact.css";
 
@@ -38,7 +39,16 @@ const Contact = () => {
     <div className="contact-page">
       <div className="container">
         {/* Contact Form */}
-        <div className="contact-form">
+        <motion.div
+          className="contact-form"
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{
+            duration: 0.6,
+            ease: "easeInOut",
+          }}
+          viewport={{ once: true, amount: 0.2 }}
+        >
           <h2>Get in Touch</h2>
           <form onSubmit={handleSubmit}>
             {/* Name and Organization */}
@@ -55,7 +65,7 @@ const Contact = () => {
                 />
               </div>
               <div className="flex flex-col ">
-                <label>Your Organization's Name</label>
+                <label>Your Organization&apos;s Name</label>
                 <input
                   type="text"
                   name="organization"
@@ -172,27 +182,36 @@ const Contact = () => {
               <option value="Referral">Referral</option>
             </select>
 
-            <button type="submit">Let's Connect!</button>
+            <button type="submit">Let&apos;s Connect!</button>
           </form>
-        </div>
+        </motion.div>
 
         {/* Contact Info */}
-        <div className="contact-info">
+        <motion.div
+          className="contact-info"
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{
+            duration: 0.6,
+            ease: "easeInOut",
+          }}
+          viewport={{ once: true, amount: 0.2 }}
+        >
           <h2>
             Let’s make it <br /> a reality!
           </h2>
           <p>
-            We're excited to work with you soon! Please share your details &
-            we'll get back in 2-3 working days.
+            We&apos;re excited to work with you soon! Please share your details &amp;
+            we&apos;ll get back in 2-3 working days.
           </p>
           <p>Contact</p>
           <p className="flex items-center ">
             <FaEnvelope />
-            <a href="mailto:dzinr.co@gmail.com" className="pl-2 ">
-              dzinr.co@gmail.com
+            <a href="mailto:brandspark.in@gmail.com" className="pl-2 ">
+              brandspark.in@gmail.com
             </a>
           </p>
-        </div>
+        </motion.div>
       </div>
     </div>
   );

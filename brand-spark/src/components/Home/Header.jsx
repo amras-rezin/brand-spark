@@ -1,4 +1,4 @@
-import {  useEffect, useState } from "react";
+import {   useState } from "react";
 import { Link } from "react-router-dom";
 import logo from "/logo.png";
 import { FaBars, FaTimes } from "react-icons/fa";
@@ -6,35 +6,17 @@ import "./Header.css";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 10) {
-        setIsScrolled(true); 
-      } else {
-        setIsScrolled(false); 
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
-
+  
 
   return (
     <>
   <div
-    className={`w-full sticky top-0 z-50 px-14 flex justify-between items-center gap-6 transition-all duration-500 ease-in-out ${
-      isScrolled ? "backdrop-blur-lg bg-black/50" : "bg-custom-gradient"
-    } shadow-md`}
+    className={`w-full sticky top-0 z-50 px-14 flex justify-between items-center gap-6 transition-all duration-500 ease-in-out backdrop-blur-lg bg-black/50 shadow-md`}
   >
       <img src={logo} className="w-[75px]" alt="logo" />
 

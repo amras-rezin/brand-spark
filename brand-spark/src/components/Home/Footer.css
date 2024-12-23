@@ -25,6 +25,7 @@
   width: 650px;
   height: 550px;
   opacity: 0.1;
+  object-fit: cover; /* Ensures image scales correctly */
 }
 
 .footer-content {
@@ -99,6 +100,13 @@
 }
 
 /* Responsive Design */
+@media (max-width: 1024px) {
+  .background-image {
+    width: 500px; /* Reduce size on medium screens */
+    height: 450px;
+  }
+}
+
 @media (max-width: 768px) {
   .footer-content {
     flex-direction: column;
@@ -112,6 +120,11 @@
     align-items: center;
     text-align: center;
   }
+
+  .background-image {
+    width: 400px; /* Further reduce size on smaller screens */
+    height: 350px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -122,5 +135,10 @@
   .footer-right p,
   .footer-nav a {
     font-size: 14px;
+  }
+
+  .background-image {
+    width: 300px; /* Make it even smaller on very small screens */
+    height: 250px;
   }
 }

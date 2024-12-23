@@ -1,5 +1,4 @@
-// Footer.jsx
-import React from "react";
+
 import { FaFacebook, FaInstagram, FaGlobe, FaTiktok } from "react-icons/fa";
 import "./Footer.css";
 import backgroundImage from "/logo.png";

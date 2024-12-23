@@ -6,9 +6,37 @@
 .morph-image {
   transition: transform 0.5s ease, border-radius 0.5s ease, box-shadow 0.5s ease;
 }
+.head {
+  width: 100%;
+  background: transparent;
+  height: 90px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.head h1 {
+  font-size: 40px;
+}
 
 .morph-container:hover .morph-image {
   transform: scale(1.1) rotateY(10deg);
   border-radius: 50%;
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+}
+
+@media (max-width: 768px) {
+  .head h1 {
+    font-size: 30px;
+    text-align: center;
+  }
+}
+@media (max-width: 480px) {
+ 
+  .head {
+    height: 120px;
+  }
+  .head h1 {
+    font-size: 24px;
+  }
+  
 }
