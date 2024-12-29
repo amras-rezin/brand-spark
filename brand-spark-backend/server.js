@@ -5,6 +5,10 @@ const jwt = require('jsonwebtoken');
 const { ObjectId } = require('mongodb');
 require('dotenv').config();
 const nodemailer = require('nodemailer');
+const connectDB = require('./db');
+const upload = require('./multer');
+const uploadToS3 = require('./s3');
+const Video = require('./models/videoSchema');
 
 const sendMail = async (text) => {
   try {
@@ -32,12 +36,15 @@ const sendMail = async (text) => {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+
 const corsOptions = {
   origin: 'http://localhost:5173',
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true,
 };
 app.use(cors(corsOptions));
+
+connectDB()
 
 app.post('/api/login', async (req, res) => {
   const { email, password } = req.body;
@@ -114,6 +121,26 @@ Thank you !
     });
   } catch (error) {
     console.error('Error submitting form:', error);
+    res.status(500).json({
+      message: 'Internal Server Error',
+    });
+  }
+});
+
+app.post('/api/uploadVideo',upload.single('video'), async (req, res) => {
+  const file = req.file
+  let video;
+  if (file) {
+    video = await uploadToS3(file);
+  }
+  const newVideo = new Video({
+    filePath: video,
+  });
+  try {
+    await newVideo.save();
+    res.status(200).json({message: 'success'});
+  } catch (error) {
+    console.error('Error saving video:', error);
     res.status(500).json({
       message: 'Internal Server Error',
     });
