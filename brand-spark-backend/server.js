@@ -155,6 +155,14 @@ app.post('/api/uploadVideo',upload.single('video'), async (req, res) => {
   }
 });
 
+app.get('/api/getVideo', async (req, res) => {
+  const videos = await Video.find();
+  if (!videos) {
+    return res.status(404).json({ message: 'No videos found' });
+  }
+  res.json(videos);
+});
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
