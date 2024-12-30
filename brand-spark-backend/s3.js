@@ -1,5 +1,5 @@
 const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
-const { v4: uuidv4 } = require('uuid');
+require('dotenv').config()
 const path = require('path');
 
 const s3 = new S3Client({
@@ -8,12 +8,14 @@ const s3 = new S3Client({
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
   },
+  maxAttempts: 5, 
+  requestTimeout: 300000, 
+  socketTimeout: 300000, 
+  connectionTimeout: 300000,
 });
 
 async function uploadToS3(file) {
-  const uniqueID = uuidv4();
-  const fileExtension = path.extname(file.originalname);
-  const filename = `${uniqueID}${fileExtension}`;
+  const filename = `${file.originalname}`;
 
   const params = {
     Bucket: process.env.AWS_S3_BUCKET,
@@ -25,11 +27,16 @@ async function uploadToS3(file) {
   const command = new PutObjectCommand(params);
 
   try {
-    await s3.send(command);
-    return params.Key;
+    console.log(`Uploading file ${filename} to S3...`);
+    const data = await s3.send(command);
+    console.log(`File uploaded successfully: ${data.Location}`);
+    return filename;  
   } catch (error) {
     console.error('Error uploading file to S3:', error);
-    throw new Error(error.message);
+    if (error.$fault === 'client') {
+      console.error('Client-side error, possibly caused by incorrect credentials or file size.');
+    }
+    throw new Error(`Failed to upload file to S3: ${error.message}`);
   }
 }
 

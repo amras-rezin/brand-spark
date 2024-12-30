@@ -33,7 +33,7 @@ const VideoGallery = () => {
         <h2 className="text-2xl text-white flex flex-row font-sans"><span><img src="/logo.png" className='w-10 h-10 mr-2' alt="" /></span>Video Gallery</h2>
         <button
           onClick={()=>navigate('/admin/add-video')}
-          className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+          className="flex items-center gap-2 bg-black text-white px-4 py-2 rounded-lg hover:scale-105 transition-colors"
         >
           <PlusCircle className="w-5 h-5" />
           Add Video
@@ -59,9 +59,9 @@ const VideoGallery = () => {
                 alt='video'
                 className="w-full h-full object-cover"
               />
-              <div className="absolute inset-0 bg-black bg-opacity-50 group-hover:bg-opacity-40 transition-opacity flex items-center justify-center">
+              <div className="absolute inset-0 bg-black bg-opacity-60 group-hover:bg-opacity-40 transition-opacity flex items-center justify-center">
                 {video.selected ? (
-                  <Check className="w-12 h-12 text-blue-500" />
+                  <Check className="w-12 h-12 text-white" />
                 ) : (
                   <Play className="w-12 h-12 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
                 )}

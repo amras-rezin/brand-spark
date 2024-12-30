@@ -139,13 +139,18 @@ app.post('/api/uploadVideo',upload.single('video'), async (req, res) => {
   const file = req.file
   let video;
   if (file) {
-    video = await uploadToS3(file);
+    const smallFile = {
+      originalname: 'test.txt',
+      buffer: Buffer.from('Hello world!'),
+      mimetype: 'text/plain',
+    };
+    await uploadToS3(smallFile);
   }
-  const newVideo = new Video({
-    filePath: video,
-  });
+  // const newVideo = new Video({
+  //   filePath: video,
+  // });
   try {
-    await newVideo.save();
+    // await newVideo.save();
     res.status(200).json({message: 'success'});
   } catch (error) {
     console.error('Error saving video:', error);

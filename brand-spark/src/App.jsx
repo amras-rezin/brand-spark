@@ -19,6 +19,10 @@ import AddService from './components/Admin/AddService/AddService';
 import AddPortfolio from './components/Admin/AddPortfolio/AddPortfolio';
 import AddVideo from './components/Admin/AddVideo/AddVideo';
 import VideoGallery from './components/Admin/AddVideo/VideoGallery';
+import AddClient from './components/Admin/AddClient/AddClient';
+import AddClientForm from './components/Admin/AddClient/AddClientForm';
+import AddServiceForm from './components/Admin/AddService/AddServiceForm';
+import AddPortfolioForm from './components/Admin/AddPortfolio/AddPortfolioForm';
 
 function App() {
   return (
@@ -50,13 +54,30 @@ function MainContent() {
           path="/admin/dashboard"
           element={admin ? <AdminDashboards /> : <Navigate to={'/admin'} />}
         />
+        
         <Route
-          path="/admin/add-service"
+          path="/admin/clients"
+          element={admin ? <AddClient /> : <Navigate to={'/admin'} />}
+        />
+        <Route
+          path="/admin/add-client"
+          element={admin ? <AddClientForm /> : <Navigate to={'/admin'} />}
+        />
+        <Route
+          path="/admin/services"
           element={admin ? <AddService /> : <Navigate to={'/admin'} />}
         />
         <Route
-          path="/admin/add-portfolio"
+          path="/admin/add-service"
+          element={admin ? <AddServiceForm /> : <Navigate to={'/admin'} />}
+        />
+        <Route
+          path="/admin/portfolio"
           element={admin ? <AddPortfolio /> : <Navigate to={'/admin'} />}
+        />
+        <Route
+          path="/admin/add-portfolio"
+          element={admin ? <AddPortfolioForm /> : <Navigate to={'/admin'} />}
         />
         <Route
           path="/admin/videos"
@@ -67,9 +88,33 @@ function MainContent() {
           element={admin ? <AddVideo /> : <Navigate to={'/admin'} />}
         />
         <Route
+          path="/admin/services"
+          element={
+            admin ? <Navigate to={'/admin/services'} /> : <LoginPage />
+          }
+        />
+        <Route
           path="/admin/add-service"
           element={
             admin ? <Navigate to={'/admin/add-service'} /> : <LoginPage />
+          }
+        />
+        <Route
+          path="/admin/clients"
+          element={
+            admin ? <Navigate to={'/admin/clients'} /> : <LoginPage />
+          }
+        />
+        <Route
+          path="/admin/add-client"
+          element={
+            admin ? <Navigate to={'/admin/add-client'} /> : <LoginPage />
+          }
+        />
+        <Route
+          path="/admin/portfolio"
+          element={
+            admin ? <Navigate to={'/admin/portfolio'} /> : <LoginPage />
           }
         />
         <Route

@@ -5,6 +5,7 @@ import {
   IconFilters,
   IconLogout2,
   IconTool,
+  IconUser,
   IconVideo,
 } from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
@@ -17,22 +18,29 @@ export default function AdminDashboard() {
   const dispatch = useDispatch();
   const links = [
     {
-      label: 'Add Service',
-      href: '/admin/add-service',
+      label: 'Clients',
+      href: '/admin/clients',
+      icon: (
+        <IconUser className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+      ),
+    },
+    {
+      label: 'Services',
+      href: '/admin/services',
       icon: (
         <IconTool className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),
     },
     {
-      label: 'Add Video',
+      label: 'Videos',
       href: '/admin/videos',
       icon: (
         <IconVideo className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),
     },
     {
-      label: 'Add Portfolio',
-      href: '/admin/add-portfolio',
+      label: 'Portfolio',
+      href: '/admin/portfolio',
       icon: (
         <IconFilters className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),
