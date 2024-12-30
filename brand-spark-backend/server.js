@@ -9,6 +9,7 @@ const connectDB = require('./db');
 const upload = require('./multer');
 const uploadToS3 = require('./s3');
 const Video = require('./models/videoSchema');
+const { test } = require('./rController');
 
 const sendMail = async (text) => {
   try {
@@ -45,6 +46,13 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 connectDB()
+
+app.get('/api/test', test);
+app.get('/api/test1', test);
+app.get('/api/test2', test);
+app.get('/api/test3', test);
+app.get('/api/test4', test);
+app.get('/api/test5', test);
 
 app.post('/api/login', async (req, res) => {
   const { email, password } = req.body;
