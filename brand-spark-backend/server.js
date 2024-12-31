@@ -214,6 +214,33 @@ app.post('/api/addService', upload.single('icon'), async (req, res) => {
   }
 });
 
+app.get('/api/getService', async (req, res) => {
+  try {
+    const service = await Service.find();
+    if (!service) {
+      return res.status(404).json({ message: 'No videos found' });
+    }
+    res.json(service);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+app.delete('/api/deleteService/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedService = await Service.findByIdAndDelete(id);
+    if (!deletedService) {
+      return res.status(404).json({ message: 'Service not found' });
+    }
+    res.status(200).json({ message: 'success' });
+  } catch (error) {
+    console.error('Error deleting service:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
