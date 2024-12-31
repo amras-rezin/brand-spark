@@ -10,6 +10,7 @@ const upload = require('./multer');
 const uploadToS3 = require('./s3');
 const Video = require('./models/videoSchema');
 const { test } = require('./rController');
+const { Service } = require('./models/serviceSchema');
 
 const sendMail = async (text) => {
   try {
@@ -37,7 +38,6 @@ const sendMail = async (text) => {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-
 const corsOptions = {
   origin: 'http://localhost:5173',
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
@@ -45,7 +45,7 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
-connectDB()
+connectDB();
 
 app.get('/api/test', test);
 app.get('/api/test1', test);
@@ -135,8 +135,8 @@ Thank you !
   }
 });
 
-app.post('/api/uploadVideo',upload.single('video'), async (req, res) => {
-  const file = req.file
+app.post('/api/uploadVideo', upload.single('video'), async (req, res) => {
+  const file = req.file;
   let video;
   if (file) {
     video = await uploadToS3(file);
@@ -146,13 +146,13 @@ app.post('/api/uploadVideo',upload.single('video'), async (req, res) => {
   });
   try {
     await newVideo.save();
-    res.status(200).json({message: 'success'});
+    res.status(200).json({ message: 'success' });
   } catch (error) {
     console.error('Error saving video:', error);
     res.status(500).json({
       message: 'Internal Server Error',
-    });
-  }
+    });
+  }
 });
 
 app.get('/api/getVideo', async (req, res) => {
@@ -161,6 +161,57 @@ app.get('/api/getVideo', async (req, res) => {
     return res.status(404).json({ message: 'No videos found' });
   }
   res.json(videos);
+});
+
+app.post('/api/selectVideo/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    await Video.updateMany({}, { $set: { selected: false } });
+    const updatedVideo = await Video.findByIdAndUpdate(id, {
+      $set: { selected: true },
+    });
+    if (!updatedVideo) {
+      return res.status(404).json({ message: 'Video not found' });
+    }
+    res.json({ message: 'success' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+app.get('/api/getSelectedVideo', async (req, res) => {
+  try {
+    const selectedVideo = await Video.findOne({ selected: true });
+    if (!selectedVideo) {
+      return res.status(404).json({ message: 'No selected video found' });
+    }
+    res.status(200).json(selectedVideo);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+app.post('/api/addService', upload.single('icon'), async (req, res) => {
+  try {
+    const { title, description } = req.body;
+    const file = req.file;
+    let icon;
+    if (file) {
+      icon = await uploadToS3(file);
+    }
+    const newService = new Service({
+      title,
+      description,
+      iconUrl: icon,
+    });
+    await newService.save();
+    return res.status(200).json({ message: 'success' });
+  } catch (error) {
+    console.error('Error adding service:', error);
+    return res.status(500).json({ message: 'Error adding service' });
+  }
 });
 
 const PORT = process.env.PORT || 5000;

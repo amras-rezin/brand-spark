@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { PlusCircle, Play, Check, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { axiosAdmin } from '../../../axios/axiosAdmin';
+import { toast } from 'react-toastify';
 
 const BUCKET = import.meta.env.VITE_AWS_S3_BUCKET;
 const REGION = import.meta.env.VITE_AWS_S3_REGION;
@@ -9,35 +10,38 @@ const REGION = import.meta.env.VITE_AWS_S3_REGION;
 const VideoGallery = () => {
   const navigate = useNavigate();
   const [videos, setVideos] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [playingVideo, setPlayingVideo] = useState(null);
 
   useEffect(() => {
     const fetchVideos = async () => {
       try {
         const response = await axiosAdmin().get('/getVideo');
-        console.log(response.data,'sadlkkjsdgjhsdasdkljh')
         setVideos(response.data);
       } catch (err) {
         console.log(err);
+      } finally {
+        setLoading(false);
       }
     };
     fetchVideos();
   }, []);
 
-  // const [videos, setVideos] = useState([
-  //   { id: 1, thumbnail: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4', selected: true},
-  //   { id: 2, thumbnail: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4', selected: false },
-  //   { id: 3, thumbnail: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4', selected: false},
-  // ]);
-
-  const [playingVideo, setPlayingVideo] = useState(null);
-
-  const handleSelectVideo = (videoId) => {
-    setVideos(
-      videos.map((video) => ({
-        ...video,
-        selected: video.id === videoId,
-      }))
-    );
+  const handleSelectVideo = async (videoId) => {
+    try {
+      const { data } = await axiosAdmin().post(`/selectVideo/${videoId}`);
+      if (data.message === 'success') {
+        setVideos(
+          videos.map((video) => ({
+            ...video,
+            selected: video._id === videoId,
+          }))
+        );
+      }
+    } catch (err) {
+      toast.error(err.message);
+      console.log(err);
+    }
   };
 
   const handleWatchVideo = (video) => {
@@ -66,44 +70,57 @@ const VideoGallery = () => {
         </button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {videos.map((video) => (
-          <div
-            key={video._id}
-            className={`relative group rounded-lg overflow-hidden transition-all bg-gray-800 ${
-              video.selected
-                ? 'ring-2 ring-blue-500'
-                : 'hover:ring-2 hover:ring-gray-600'
-            }`}
-          >
+      {loading ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {Array.from({ length: 3 }).map((_, index) => (
             <div
-              className="relative aspect-video cursor-pointer"
-              onClick={() => handleSelectVideo(video.id)}
+              key={index}
+              className="animate-pulse bg-gray-800 rounded-lg overflow-hidden"
             >
-              <video
-                src={`https://${BUCKET}.s3.${REGION}.amazonaws.com/${video.filePath}`}
-                alt="video"
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-black bg-opacity-60 group-hover:bg-opacity-40 transition-opacity flex items-center justify-center">
-                {video.selected ? (
-                  <Check className="w-12 h-12 text-white" />
-                ) : (
-                  <Play className="w-12 h-12 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
-                )}
-              </div>
+              <div className="aspect-video bg-gray-700"></div>
             </div>
-            <button
-              onClick={() => handleWatchVideo(video)}
-              className="w-full bg-blue-600 text-white py-2 rounded-t-none hover:bg-blue-700 transition-colors"
+          ))}
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {videos.map((video) => (
+            <div
+              key={video._id}
+              className={`relative group rounded-lg overflow-hidden transition-all bg-gray-800 ${
+                video.selected
+                  ? 'ring-2 ring-blue-500'
+                  : 'hover:ring-2 hover:ring-gray-600'
+              }`}
             >
-              Watch Now
-            </button>
-          </div>
-        ))}
-      </div>
+              <div
+                className="relative aspect-video cursor-pointer"
+                onClick={() => handleSelectVideo(video._id)}
+              >
+                <video
+                  src={`https://${BUCKET}.s3.${REGION}.amazonaws.com/${video.filePath}`}
+                  alt="video"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-black bg-opacity-60 group-hover:bg-opacity-40 transition-opacity flex items-center justify-center">
+                  {video.selected ? (
+                    <Check className="w-12 h-12 text-white" />
+                  ) : (
+                    <Play className="w-12 h-12 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
+                  )}
+                </div>
+              </div>
+              <button
+                onClick={() => handleWatchVideo(video)}
+                className="w-full bg-blue-600 text-white py-2 rounded-t-none hover:bg-blue-700 transition-colors"
+              >
+                Watch Now
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
 
-      {videos.length === 0 && (
+      {videos.length === 0 && !loading && (
         <div className="text-center py-12">
           <p className="text-gray-400">
             No videos added yet. Click the Add Video button to get started.
@@ -122,7 +139,7 @@ const VideoGallery = () => {
               <X className="w-6 h-6" />
             </button>
             <video
-              src={playingVideo.thumbnail}
+              src={`https://${BUCKET}.s3.${REGION}.amazonaws.com/${playingVideo.filePath}`}
               className="w-full aspect-video"
               controls
               autoPlay
