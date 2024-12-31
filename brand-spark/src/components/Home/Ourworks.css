@@ -17,14 +17,12 @@
   gap: 1.5rem;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 1rem;
 }
 
 .work-card {
-  background-color: #1b263b;
+  background-color: transparent;
   border-radius: 15px;
   overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   transition: transform 0.3s;
 }
 
@@ -33,11 +31,12 @@
 }
 
 .work-card img {
-  width: 100%;
-  height: auto;
+  width: 130%;
+  height: 115%;
   object-fit: cover;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
+
+
 
 .work-text {
   padding: 1rem;

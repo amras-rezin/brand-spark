@@ -18,7 +18,7 @@ const Header = () => {
   <div
     className={`w-full sticky top-0 z-50 px-14 flex justify-between items-center gap-6 transition-all duration-500 ease-in-out backdrop-blur-lg bg-black/50 shadow-md`}
   >
-      <img src={logo} className="w-[75px]" alt="logo" />
+      <Link to={'/'}><img src={logo} className="w-[75px]" alt="logo" /></Link>
 
       {/* Burger and close icon */}
       <div className="icon-button md:hidden" onClick={toggleMenu}>

@@ -53,8 +53,8 @@
 /* Left side (image) */
 .left {
   order: 2;
-  width: 150px;  /* Reduced from 250px */
-  min-width: 150px;  /* Reduced from 250px */
+  width: 100px;  /* Reduced from 250px */
+  min-width: 100px;  /* Reduced from 250px */
   display: flex;
   align-items: center;
 }

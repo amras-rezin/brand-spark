@@ -3,11 +3,14 @@
   background: linear-gradient(to right, #071f63, #000, #000, #000, #071f63);
   color: #fff;
   padding: 10px;
+  display: flex;
+  justify-content: center;
 }
 
 .contact-info {
   position: sticky;
   top: 20px;
+  padding: 50px;
   align-self: flex-start;
 }
 

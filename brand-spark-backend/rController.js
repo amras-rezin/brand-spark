@@ -94,7 +94,6 @@ const getPortfolioImages = async (req, res) => {
     if (!data) {
       return res.status(404).json({ message: "No images found" });
     }
-    console.log(data);
     res.json(data); 
   } catch (error) {
     console.error("Error getting images:", error);

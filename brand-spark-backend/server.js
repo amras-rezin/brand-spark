@@ -56,8 +56,8 @@ app.delete('/api/portfolioManagement/:id', deletePortfolioImage);
 
 app.post('/api/login', async (req, res) => {
   const { email, password } = req.body;
-  const adminEmail = process.env.ADMIN_EMAIL || 'admin@gmail.com';
-  const adminPassword = process.env.ADMIN_PASSWORD || 'Admin@123';
+  const adminEmail = process.env.ADMIN_EMAIL || 'admin@brandspark.com';
+  const adminPassword = process.env.ADMIN_PASSWORD || 'Brandspark$69';
 
   if (email === adminEmail && password === adminPassword) {
     try {
@@ -93,8 +93,6 @@ app.post('/api/contact', async (req, res) => {
     budget,
     source,
   } = req.body;
-  console.log('Contact form submitted:', req.body);
-
   if (!name || !organization || !email || !contact) {
     return res.status(400).json({
       message: 'All fields are required',

@@ -1,23 +1,25 @@
-import { FaEnvelope, FaSpinner } from "react-icons/fa";
-import { motion } from "framer-motion";
-import { useFormik } from "formik";
-import * as Yup from "yup";
-import axios from "axios";
+import { FaEnvelope, FaSpinner } from 'react-icons/fa';
+import { motion } from 'framer-motion';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import axios from 'axios';
 
-import "./Contact.css";
-import { toast } from "react-toastify";
-import { useState } from "react";
+import './Contact.css';
+import { toast } from 'react-toastify';
+import { useState } from 'react';
 
 const Contact = () => {
   const [loading, setLoading] = useState(false);
   const validationSchema = Yup.object({
-    name: Yup.string().required("Name is required"),
-    organization: Yup.string().required("Organization is required"),
-    email: Yup.string().email("Invalid email format"),
+    name: Yup.string().required('Name is required'),
+    organization: Yup.string().required('Organization is required'),
+    email: Yup.string().email('Invalid email format'),
     contact: Yup.string()
-      .required("Contact is required")
-      .matches(/^[0-9]{10}$/, "Contact must be a 10-digit number"),
-    website: Yup.string().url("Invalid URL"),
+      .required('Contact is required')
+      .matches(/^[0-9]{10}$/, 'Contact must be a 10-digit number'),
+    website: Yup.string()
+      .url('Invalid URL (Eg: https://www.linkedin.com/company/brandspark-in/) ')
+      .required('URL is required'),
     services: Yup.array(),
     budget: Yup.string(),
     source: Yup.string(),
@@ -25,14 +27,14 @@ const Contact = () => {
 
   const formik = useFormik({
     initialValues: {
-      name: "",
-      organization: "",
-      email: "",
-      contact: "",
-      website: "",
+      name: '',
+      organization: '',
+      email: '',
+      contact: '',
+      website: '',
       services: [],
-      budget: "",
-      source: "",
+      budget: '',
+      source: '',
     },
     validationSchema,
     onSubmit: async (values) => {
@@ -42,14 +44,14 @@ const Contact = () => {
           `${import.meta.env.VITE_BASE_URL}/contact`,
           values
         );
-        if (response.data.message === "Form submitted successfully") {
-          toast.success("Form submitted successfully");
+        if (response.data.message === 'Form submitted successfully') {
+          toast.success('Form submitted successfully');
         } else {
-          toast.error("Form submission failed");
+          toast.error('Form submission failed');
         }
       } catch (error) {
-        console.error("Error submitting form", error);
-      }finally{
+        console.error('Error submitting form', error);
+      } finally {
         setLoading(false);
       }
     },
@@ -64,7 +66,7 @@ const Contact = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{
             duration: 0.6,
-            ease: "easeInOut",
+            ease: 'easeInOut',
           }}
           viewport={{ once: true, amount: 0.2 }}
         >
@@ -83,7 +85,9 @@ const Contact = () => {
                   className="ip-4"
                 />
                 {formik.touched.name && formik.errors.name && (
-                  <p className="error-text  text-sm text-red-500 -mt-1">{formik.errors.name}</p>
+                  <p className="error-text  text-sm text-red-500 -mt-1">
+                    {formik.errors.name}
+                  </p>
                 )}
               </div>
               <div className="flex flex-col">
@@ -97,7 +101,9 @@ const Contact = () => {
                   className="ip-4"
                 />
                 {formik.touched.organization && formik.errors.organization && (
-                  <p className="error-text  text-sm text-red-500 -mt-1">{formik.errors.organization}</p>
+                  <p className="error-text  text-sm text-red-500 -mt-1">
+                    {formik.errors.organization}
+                  </p>
                 )}
               </div>
             </div>
@@ -114,7 +120,9 @@ const Contact = () => {
                   className="ip-4"
                 />
                 {formik.touched.email && formik.errors.email && (
-                  <p className="error-text  text-sm text-red-500 -mt-1">{formik.errors.email}</p>
+                  <p className="error-text  text-sm text-red-500 -mt-1">
+                    {formik.errors.email}
+                  </p>
                 )}
               </div>
               <div className="flex flex-col">
@@ -128,7 +136,9 @@ const Contact = () => {
                   className="ip-4"
                 />
                 {formik.touched.contact && formik.errors.contact && (
-                  <p className="error-text  text-sm text-red-500 -mt-1">{formik.errors.contact}</p>
+                  <p className="error-text  text-sm text-red-500 -mt-1">
+                    {formik.errors.contact}
+                  </p>
                 )}
               </div>
             </div>
@@ -142,16 +152,19 @@ const Contact = () => {
               onBlur={formik.handleBlur}
             />
             {formik.touched.website && formik.errors.website && (
-              <p className="error-text text-sm text-red-500 -mt-1">{formik.errors.website}</p>
+              <p className="error-text text-sm text-red-500 -mt-1">
+                {formik.errors.website}
+              </p>
             )}
 
             <label>What services are you interested in?</label>
             <div className="checkbox-group">
               {[
-                "Logo design",
-                "Brand identity development",
-                "Packaging design",
-                "Brand consultation",
+                'Logo design',
+                'Brand identity development',
+                'Packaging design',
+                'Brand consultation',
+                'Motion Graphics',
               ].map((service) => (
                 <label key={service}>
                   <input
@@ -165,38 +178,15 @@ const Contact = () => {
               ))}
             </div>
 
-            <label>How much are you looking to invest in this project?</label>
-            <select
-              name="budget"
-              value={formik.values.budget}
-              onChange={formik.handleChange}
-              className="dpdn"
-            >
-              <option value="">Select</option>
-              <option value="₹1,20,000 to ₹2,50,000">
-                ₹1,20,000 to ₹2,50,000
-              </option>
-              <option value="₹2,50,000 to ₹5,00,000">
-                ₹2,50,000 to ₹5,00,000
-              </option>
-              <option value="₹5,00,000 and above">₹5,00,000 and above</option>
-            </select>
-
-            <label>And lastly, how did you hear about us?</label>
-            <select
-              name="source"
-              value={formik.values.source}
-              onChange={formik.handleChange}
-              className="dpdn"
-            >
-              <option value="">Select</option>
-              <option value="Instagram">Instagram</option>
-              <option value="Referral">Referral</option>
-            </select>
-
             <button type="submit flex">
-            {loading ? <FaSpinner className="animate-spin mr-2" /> : "Let's Connect!"}
-
+              {loading ? (
+                <div className='flex items-center justify-center'>
+                  <FaSpinner className="animate-spin mr-2" />
+                  Let&apos;s Connect!
+                </div>
+              ) : (
+                "Let's Connect!"
+              )}
             </button>
           </form>
         </motion.div>
@@ -207,7 +197,7 @@ const Contact = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{
             duration: 0.6,
-            ease: "easeInOut",
+            ease: 'easeInOut',
           }}
           viewport={{ once: true, amount: 0.2 }}
         >
