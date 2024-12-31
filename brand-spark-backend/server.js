@@ -9,8 +9,8 @@ const connectDB = require('./db');
 const upload = require('./multer');
 const uploadToS3 = require('./s3');
 const Video = require('./models/videoSchema');
-const { test, uploadClient } = require('./rController');
-const { Service } = require('./models/serviceSchema');
+const { deletePortfolioImage, uploadClient, getClients, deleteClient, uploadPortfolioImages, getPortfolioImages } = require('./rController');
+const Service = require('./models/serviceSchema');
 
 const sendMail = async (text) => {
   try {
@@ -48,11 +48,11 @@ app.use(cors(corsOptions));
 connectDB();
 
 app.post('/api/uploadClient', upload.single('image'),uploadClient);
-app.get('/api/test1', test);
-app.get('/api/test2', test);
-app.get('/api/test3', test);
-app.get('/api/test4', test);
-app.get('/api/test5', test);
+app.get('/api/clients', getClients);
+app.delete('/api/deleteClient/:id', deleteClient);
+app.post('/api/uploadPortfolioImages', upload.fields([{ name: 'coverImage', maxCount: 1 },{ name: 'detailsImage', maxCount: 1 }]), uploadPortfolioImages);
+app.get('/api/portfolioManagement', getPortfolioImages);
+app.delete('/api/portfolioManagement/:id', deletePortfolioImage);
 
 app.post('/api/login', async (req, res) => {
   const { email, password } = req.body;

@@ -1,7 +1,30 @@
 import { motion } from "framer-motion";
 import "./Clients.css";
+import { useEffect, useState } from "react";
+import { axiosAdmin } from "../../axios/axiosAdmin";
 
 const Clients = () => {
+  const [clientData, setClientData] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+  useEffect(() => {
+      const fetchClients = async () => {
+        try {
+          const response = await axiosAdmin().get("/clients");
+          setClientData(response.data);
+          console.log("Client Data:", response.data);
+          setLoading(false);
+        } catch (err) {
+          console.error("Error fetching clients:", err);
+          setError("Failed to load clients.");
+          setLoading(false);
+        }
+      };
+  
+      fetchClients();
+    }, []);
+
   const blueLogos = [...Array(7)].map((_, i) => `/icons/BLUE${i + 1}.png`);
   const whiteLogos = [...Array(7)].map((_, i) => `/icons/white${i+1}.png`);
   const topBrandLogo = "/icons/sparkBlue.png"; 
