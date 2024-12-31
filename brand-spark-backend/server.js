@@ -39,7 +39,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const corsOptions = {
-  origin: 'http://localhost:5174',
+  origin: process.env.FrontendUrl,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true,
 };
