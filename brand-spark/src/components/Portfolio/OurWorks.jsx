@@ -1,29 +1,52 @@
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
+import { axiosAdmin } from '../../axios/axiosAdmin';
 import "./OurWorks.css";
+
+const BUCKET = import.meta.env.VITE_AWS_S3_BUCKET;
+const REGION = import.meta.env.VITE_AWS_S3_REGION;
 
 const OurWorks = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const [modalImage, setModalImage] = useState("");
+  const [projects, setProjects] = useState([]);
+  const [loadingImage, setLoadingImage] = useState(true); // Loading state for modal image
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    fetchPortfolio();
+  }, []);
+
+  const fetchPortfolio = async () => {
+    try {
+      const response = await axiosAdmin().get('/portfolioManagement');
+      setProjects(response.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const openModal = (image) => {
     setModalImage(image);
+    setLoadingImage(true); // Set loading state to true when opening the modal
     setModalOpen(true);
     setIsClosing(false);
   };
 
   const closeModal = () => {
     setIsClosing(true);
-    setTimeout(() => setModalOpen(false), 300); // Wait for the closing animation to finish
+    setTimeout(() => setModalOpen(false), 300); 
+  };
+
+  const handleImageLoad = () => {
+    setLoadingImage(false); // Set loading state to false when image is loaded
   };
 
   useEffect(() => {
     if (isModalOpen) {
-      // Prevent background scrolling
       document.body.style.overflow = "hidden";
     } else {
-      // Allow background scrolling
       document.body.style.overflow = "auto";
     }
     return () => {
@@ -31,15 +54,6 @@ const OurWorks = () => {
     };
   }, [isModalOpen]);
 
-  // Project data
-  const projects = [
-    { id: 1, thumbnail: "./project1.png", modalImage: "./boschWork.jpeg" },
-    { id: 2, thumbnail: "./project2.png", modalImage: "./boschWork.jpeg" },
-    { id: 3, thumbnail: "./project3.png", modalImage: "./boschWork.jpeg" },
-    { id: 4, thumbnail: "./project4.png", modalImage: "./boschWork.jpeg" },
-  ];
-
-  // Modal animation variants
   const modalVariants = {
     hidden: { opacity: 0, scale: 0.9 },
     visible: { opacity: 1, scale: 1 },
@@ -49,7 +63,6 @@ const OurWorks = () => {
   return (
     <>
       <div className="works">
-        {/* Animated heading */}
         <motion.div
           className="heading-work"
           initial={{ opacity: 0, y: 50 }}
@@ -63,7 +76,6 @@ const OurWorks = () => {
           <h1>Our Finished Projects</h1>
         </motion.div>
 
-        {/* Animated project containers */}
         <motion.div
           className="projects-container"
           initial={{ opacity: 0 }}
@@ -74,7 +86,6 @@ const OurWorks = () => {
           }}
           viewport={{ once: true, amount: 0.2 }}
         >
-          {/* Project boxes */}
           {projects.map((project) => (
             <motion.div
               key={project.id}
@@ -85,11 +96,11 @@ const OurWorks = () => {
                 duration: 0.5,
                 ease: "easeInOut",
               }}
-              onClick={() => openModal(project.modalImage)}
+              onClick={() => openModal(project.detailsImageUrl)}
               style={{ cursor: "pointer" }}
             >
               <div className="image-container">
-                <img src={project.thumbnail} alt={`Project ${project.id}`} />
+                <img src={`https://${BUCKET}.s3.${REGION}.amazonaws.com/${project.coverImageUrl}`} alt={`Project ${project.id}`} />
               </div>
             </motion.div>
           ))}
@@ -119,7 +130,7 @@ const OurWorks = () => {
         >
           <motion.div
             className="modal-content relative bg-white p-4 rounded-md shadow-lg"
-            onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the modal
+            onClick={(e) => e.stopPropagation()} 
             variants={modalVariants}
             initial="hidden"
             animate={isClosing ? "exit" : "visible"}
@@ -130,10 +141,15 @@ const OurWorks = () => {
               overflowY: "auto",
             }}
           >
+            {/* Show loading spinner or placeholder while the image is loading */}
+            {loadingImage && <div className="spinner">Loading...</div>}
+
             <img
-              src={modalImage}
+              src={`https://${BUCKET}.s3.${REGION}.amazonaws.com/${modalImage}`}
               alt="Project Modal"
               className="w-full h-auto object-contain"
+              onLoad={handleImageLoad} // Trigger when image has loaded
+              style={loadingImage ? { display: 'none' } : {}}
             />
             <button
               onClick={closeModal}
