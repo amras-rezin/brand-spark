@@ -122,7 +122,7 @@ const VideoGallery = () => {
               <X className="w-6 h-6" />
             </button>
             <video
-              src={playingVideo.thumbnail}
+               src={`https://${BUCKET}.s3.${REGION}.amazonaws.com/${playingVideo.filePath}`}
               className="w-full aspect-video"
               controls
               autoPlay

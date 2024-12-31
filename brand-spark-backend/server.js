@@ -9,7 +9,7 @@ const connectDB = require('./db');
 const upload = require('./multer');
 const uploadToS3 = require('./s3');
 const Video = require('./models/videoSchema');
-const { test } = require('./rController');
+const { test, uploadClient } = require('./rController');
 
 const sendMail = async (text) => {
   try {
@@ -39,7 +39,7 @@ app.use(express.urlencoded({ extended: true }));
 
 
 const corsOptions = {
-  origin: 'http://localhost:5173',
+  origin: 'http://localhost:5174',
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true,
 };
@@ -47,7 +47,7 @@ app.use(cors(corsOptions));
 
 connectDB()
 
-app.get('/api/test', test);
+app.post('/api/uploadClient', upload.single('image'),uploadClient);
 app.get('/api/test1', test);
 app.get('/api/test2', test);
 app.get('/api/test3', test);
