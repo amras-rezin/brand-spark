@@ -1,12 +1,28 @@
+import { motion } from 'framer-motion';
+import './ServicesCards.css';
+import { useEffect, useState } from 'react';
+import { axiosAdmin } from '../../axios/axiosAdmin';
 
-import { motion } from "framer-motion";
-import "./ServicesCards.css";
-import { useEffect } from "react";
+const BUCKET = import.meta.env.VITE_AWS_S3_BUCKET;
+const REGION = import.meta.env.VITE_AWS_S3_REGION;
 
 const ServicesCards = () => {
+  const [services, setServices] = useState([])
+
   useEffect(() => {
     window.scrollTo(0, 0);
+    fetchService();
   }, []);
+
+  const fetchService = async () => {
+    try {
+      const response = await axiosAdmin().get('/getService');
+      setServices(response.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <div className="main-service">
       {/* Animated heading */}
@@ -16,7 +32,7 @@ const ServicesCards = () => {
         whileInView={{ opacity: 1, y: 0 }}
         transition={{
           duration: 0.5,
-          ease: "easeInOut",
+          ease: 'easeInOut',
         }}
         viewport={{ once: true, amount: 0.2 }}
       >
@@ -30,125 +46,22 @@ const ServicesCards = () => {
         whileInView={{ opacity: 1, y: 0 }}
         transition={{
           duration: 0.7,
-          ease: "easeInOut",
-          delay: 0.3, // Delay for smooth sequential animation
+          ease: 'easeInOut',
+          delay: 0.3, 
         }}
         viewport={{ once: true, amount: 0.2 }}
       >
-        <div className="boxes">
-          <div className="left">
-            <img src="./elements/grid1.png" alt="" />
+        {services.map((service, index) => (
+          <div className="boxes" key={index}>
+            <div className="left">
+              <img src={`https://${BUCKET}.s3.${REGION}.amazonaws.com/${service.iconUrl}`} alt={`${service.title} Image`} />
+            </div>
+            <div className="right">
+              <h2>{service.title}</h2>
+              <p>{service.description}</p>
+            </div>
           </div>
-          <div className="right">
-            <h2>Title Animation</h2>
-            <p>
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-              Aspernatur nihil in quisquam, itaque adipisci cupiditate eaque
-              debitis ullam accusamus assumenda sequi officiis perferendis
-              deserunt temporibus.
-            </p>
-          </div>
-        </div>
-        {/* Repeat for other boxes */}
-        <div className="boxes">
-          <div className="left">
-            <img src="./elements/grid2.png" alt="" />
-          </div>
-          <div className="right">
-            <h2>3D Animation</h2>
-            <p>
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-              Aspernatur nihil in quisquam, itaque adipisci cupiditate eaque
-              debitis ullam accusamus assumenda sequi officiis perferendis
-              deserunt temporibus.
-            </p>
-          </div>
-        </div>
-        {/* Continue with other services as per the original code */}
-        <div className="boxes">
-          <div className="left">
-            <img src="./elements/grid3.png" alt="" />
-          </div>
-          <div className="right">
-            <h2>SMM</h2>
-            <p>
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-              Aspernatur nihil in quisquam, itaque adipisci cupiditate eaque
-              debitis ullam accusamus assumenda sequi officiis perferendis
-              deserunt temporibus.
-            </p>
-          </div>
-        </div>
-        <div className="boxes">
-          <div className="left">
-            <img src="./elements/grid4.png" alt="" />
-          </div>
-          <div className="right">
-            <h2>Digital Marketing</h2>
-            <p>
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-              Aspernatur nihil in quisquam, itaque adipisci cupiditate eaque
-              debitis ullam accusamus assumenda sequi officiis perferendis
-              deserunt temporibus.
-            </p>
-          </div>
-        </div>
-        <div className="boxes">
-          <div className="left">
-            <img src="./elements/grid5.png" alt="" />
-          </div>
-          <div className="right">
-            <h2>Graphic Design</h2>
-            <p>
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-              Aspernatur nihil in quisquam, itaque adipisci cupiditate eaque
-              debitis ullam accusamus assumenda sequi officiis perferendis
-              deserunt temporibus.
-            </p>
-          </div>
-        </div>
-        <div className="boxes">
-          <div className="left">
-            <img src="./elements/grid6.png" alt="" />
-          </div>
-          <div className="right">
-            <h2>UI/UX Design</h2>
-            <p>
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-              Aspernatur nihil in quisquam, itaque adipisci cupiditate eaque
-              debitis ullam accusamus assumenda sequi officiis perferendis
-              deserunt temporibus.
-            </p>
-          </div>
-        </div>
-        <div className="boxes">
-          <div className="left">
-            <img src="./elements/grid7.png" alt="" />
-          </div>
-          <div className="right">
-            <h2>Motion Graphics</h2>
-            <p>
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-              Aspernatur nihil in quisquam, itaque adipisci cupiditate eaque
-              debitis ullam accusamus assumenda sequi officiis perferendis
-              deserunt temporibus.
-            </p>
-          </div>
-        </div>
-        <div className="boxes">
-          <div className="left">
-            <img src="./elements/grid8.png" alt="" />
-          </div>
-          <div className="right">
-            <h2>CGI Ad</h2>
-            <p>
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-              Aspernatur nihil in quisquam, itaque adipisci cupiditate eaque
-              debitis ullam accusamus assumenda sequi officiis perferendis
-              deserunt temporibus.
-            </p>
-          </div>
-        </div>
+        ))}
       </motion.div>
     </div>
   );

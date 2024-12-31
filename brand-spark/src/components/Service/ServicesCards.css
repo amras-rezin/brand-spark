@@ -37,11 +37,10 @@
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  width: calc(50% - 30px);
-  max-width: 600px;
-  flex-grow: 1;
-  background: rgba(0, 0, 0, 0.3); /* Semi-transparent black background */
-  backdrop-filter: blur(10px); /* Blur effect */
+  width: calc(50% - 15px);
+  min-height: 200px;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
 }
 
@@ -51,24 +50,27 @@
   box-shadow: 0 6px 8px rgba(0, 0, 0, 0.7);
 }
 
-/* Consistent layout with image on the right */
+/* Left side (image) */
 .left {
   order: 2;
+  width: 150px;  /* Reduced from 250px */
+  min-width: 150px;  /* Reduced from 250px */
   display: flex;
   align-items: center;
 }
 
 .left img {
   width: 100%;
-  max-width: 250px;
   height: auto;
   border-radius: 10px;
-  margin-left: 20px;
-  padding-right: 20px;
-  box-sizing: border-box;
+  margin-left: 15px;  /* Reduced from 20px */
+  padding-right: 15px;  /* Reduced from 20px */
+  object-fit: cover;
 }
 
+/* Right side (text) */
 .right {
+  flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -89,40 +91,47 @@
 }
 
 /* Responsive Design */
-
-/* Tablet View */
 @media (max-width: 1024px) {
   .boxes {
     width: 100%;
-    flex-direction: row; /* Keeps image on the right */
-    padding: 25px;
+    min-height: 180px;
   }
 
-  .left img {
-    max-width: 200px;
+  .left {
+    width: 130px;  /* Reduced from 200px */
+    min-width: 130px;  /* Reduced from 200px */
   }
 }
 
-/* Mobile View */
 @media (max-width: 768px) {
   .boxes {
     flex-direction: column;
     text-align: center;
-    width: 100%;
     padding: 20px;
+    min-height: auto;
+  }
+
+  .left {
+    order: 2;
+    width: 120px;  /* Reduced from 150px */
+    min-width: 120px;  /* Reduced from 150px */
+    margin: 20px auto 0;
   }
 
   .left img {
-    max-width: 150px;
-    margin-left: 0; /* Center image on small screens */
+    margin-left: 0;
+    padding-right: 0;
   }
 
   .right {
-    text-align: center; /* Center text for smaller screens */
+    text-align: center;
+  }
+
+  .right p {
+    text-align: center;
   }
 }
 
-/* Small Mobile */
 @media (max-width: 480px) {
   .head-service h1 {
     font-size: 2rem;
@@ -136,7 +145,8 @@
     font-size: 0.9rem;
   }
 
-  .left img {
-    max-width: 120px;
+  .left {
+    width: 100px;  /* Reduced from 120px */
+    min-width: 100px;  /* Reduced from 120px */
   }
 }

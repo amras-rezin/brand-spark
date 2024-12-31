@@ -10,7 +10,7 @@ const upload = require('./multer');
 const uploadToS3 = require('./s3');
 const Video = require('./models/videoSchema');
 const { test } = require('./rController');
-const { Service } = require('./models/serviceSchema');
+const Service = require('./models/serviceSchema');
 
 const sendMail = async (text) => {
   try {
@@ -211,6 +211,33 @@ app.post('/api/addService', upload.single('icon'), async (req, res) => {
   } catch (error) {
     console.error('Error adding service:', error);
     return res.status(500).json({ message: 'Error adding service' });
+  }
+});
+
+app.get('/api/getService', async (req, res) => {
+  try {
+    const service = await Service.find();
+    if (!service) {
+      return res.status(404).json({ message: 'No videos found' });
+    }
+    res.json(service);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+app.delete('/api/deleteService/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedService = await Service.findByIdAndDelete(id);
+    if (!deletedService) {
+      return res.status(404).json({ message: 'Service not found' });
+    }
+    res.status(200).json({ message: 'success' });
+  } catch (error) {
+    console.error('Error deleting service:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
   }
 });
 
