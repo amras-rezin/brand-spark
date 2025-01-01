@@ -6,7 +6,7 @@ const Para = () => {
   return (
     <>
       {/* Heading with slide-up animation */}
-      <div className="head mt-6">
+      <div className="head1 mt-6">
         <motion.h1
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}

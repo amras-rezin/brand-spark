@@ -11,7 +11,7 @@ const Steps = () => {
           transition={{ duration: 0.5, ease: "easeInOut" }}
         >
         3 Steps to <br />
-        Partner with US
+        Partner with Us
       </motion.h1>
       
       <motion.div

@@ -12,20 +12,23 @@
 
 .footer-overlay {
   position: absolute;
-  top: 10px;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1;
+  pointer-events: none; /* Ensures the background image doesn't interfere with clicks */
 }
 
 .background-image {
-  width: 650px;
-  height: 550px;
+  width: 100%;
+  height: 100%;
   opacity: 0.1;
-  object-fit: cover; /* Ensures image scales correctly */
+  object-fit: contain; /* Ensures the image scales correctly */
+  object-position: center; /* Keeps the image centered */
 }
 
 .footer-content {
@@ -130,5 +133,21 @@
   .footer-copyright {
     margin-top: 20px;
     font-size: 12px;
+  }
+
+  .background-image {
+    height: auto; /* Maintain aspect ratio */
+    object-fit: contain; /* Ensures image remains visible */
+    object-position: center top; /* Keeps the focus on the top-center of the image */
+  }
+}
+
+@media (max-width: 480px) {
+  .background-image {
+    width: 100%;
+    height: auto;
+    opacity: 0.15; /* Slightly increase opacity for better visibility */
+    object-fit: contain;
+    object-position: center; /* Keeps the image centered */
   }
 }

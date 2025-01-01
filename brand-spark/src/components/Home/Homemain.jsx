@@ -35,7 +35,7 @@ const Homemain = () => {
     {loading ? (
       <div>Loading video...</div>
     ) : video.filePath ? (
-      <video className="video" autoPlay loop muted>
+      <video className="video" playsInline autoPlay loop muted>
         <source
           src={`https://${BUCKET}.s3.${REGION}.amazonaws.com/${video.filePath}`}
           type="video/mp4"

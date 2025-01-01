@@ -1,5 +1,6 @@
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, EffectCoverflow } from 'swiper/modules';
+import './Team.css'
 import 'swiper/css';
 import 'swiper/css/effect-coverflow';  // Import coverflow effect styles
 

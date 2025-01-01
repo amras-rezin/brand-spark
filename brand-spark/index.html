@@ -54,6 +54,12 @@
     background: linear-gradient(to right, #071f63, #000, #000, #000, #071f63);
     font-family: 'Inter', sans-serif;
   }
+
+  @media (pointer: coarse) {
+    .cursor, .cursor2 {
+      display: none;
+    }
+  }
 </style>
 
 <body>
@@ -62,22 +68,25 @@
   <div class="cursor"></div>
   <div class="cursor2"></div>
 
-
   <script>
     var cursor = document.querySelector(".cursor");
     var cursor2 = document.querySelector(".cursor2");
+
     if (!window.location.pathname.includes('admin')) {
-      document.addEventListener("mousemove", function (e) {
-        cursor.style.cssText = cursor2.style.cssText =
-          "left: " + e.clientX + "px; top: " + e.clientY + "px;";
-      });
+      if (window.matchMedia("(pointer: fine)").matches) { // Detect devices with a precise pointer (mouse)
+        document.addEventListener("mousemove", function (e) {
+          cursor.style.cssText = cursor2.style.cssText =
+            "left: " + e.clientX + "px; top: " + e.clientY + "px;";
+        });
+      } else {
+        cursor.style.display = "none";
+        cursor2.style.display = "none";
+      }
     } else {
       cursor.style.display = "none";
       cursor2.style.display = "none";
     }
   </script>
-
-
 </body>
 
 </html>

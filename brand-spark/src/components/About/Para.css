@@ -1,5 +1,5 @@
 /* Responsive Styles */
-.head {
+.head1 {
   width: 100%;
   background: linear-gradient(to right, #071f63, #000, #000, #000, #071f63);
   color: white;
@@ -8,7 +8,7 @@
   justify-content: center;
   align-items: center;
 }
-.head h1 {
+.head1 h1 {
   font-size: 40px;
 }
 .para {
@@ -35,7 +35,7 @@
   border: 1px solid #086aff;
 }
 @media (max-width: 768px) {
-  .head h1 {
+  .head1 h1 {
     font-size: 30px;
     text-align: center;
   }
@@ -46,10 +46,10 @@
   }
 }
 @media (max-width: 480px) {
-  .head {
+  .head1 {
     height: 120px;
   }
-  .head h1 {
+  .head1 h1 {
     font-size: 24px;
   }
   .para p {
