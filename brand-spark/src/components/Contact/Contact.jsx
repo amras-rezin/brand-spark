@@ -10,6 +10,7 @@ import { useState } from 'react';
 
 const Contact = () => {
   const [loading, setLoading] = useState(false);
+  const [formKey, setFormKey] = useState(0);
   const validationSchema = Yup.object({
     name: Yup.string().required('Name is required'),
     organization: Yup.string().required('Organization is required'),
@@ -46,6 +47,8 @@ const Contact = () => {
         );
         if (response.data.message === 'Form submitted successfully') {
           toast.success('Form submitted successfully');
+          formik.resetForm();
+          setFormKey((prevKey) => prevKey + 1);
         } else {
           toast.error('Form submission failed');
         }
@@ -71,7 +74,7 @@ const Contact = () => {
           viewport={{ once: true, amount: 0.2 }}
         >
           <h2>Get in Touch</h2>
-          <form onSubmit={formik.handleSubmit}>
+          <form key={formKey} onSubmit={formik.handleSubmit}>
             <div className="row">
               <div className="flex flex-col">
                 <label>Your Name *</label>
@@ -160,11 +163,11 @@ const Contact = () => {
             <label>What services are you interested in?</label>
             <div className="checkbox-group">
               {[
-                'Logo design',
-                'Brand identity development',
-                'Packaging design',
-                'Brand consultation',
+                'Branding',
+                'Graphic Design',
                 'Motion Graphics',
+                'Digital Marketing',
+                'Social Media Management',
               ].map((service) => (
                 <label key={service}>
                   <input

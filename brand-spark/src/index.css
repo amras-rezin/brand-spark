@@ -2,10 +2,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@font-face {
+  font-family: 'Axiforma';
+  font-style: normal;
+  font-weight: 500;
+  src: local('Axiforma'), url('https://fonts.cdnfonts.com/s/28727/Kastelov  Axiforma Medium.woff') format('woff');
+}
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Inter", sans-serif;
+  font-family: "Axiforma", sans-serif;
 }
